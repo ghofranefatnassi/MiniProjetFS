@@ -10,7 +10,7 @@ const paniers = require('./routes/api/paniers');
 const commandes = require('./routes/api/commandes');
 const app = express();
 const port = process.env.PORT || 3001;
-
+const path = require('path');
 app.use(express.json());
 app.use(cors());
 
@@ -30,6 +30,6 @@ app.use('/api/categories',categories);
 app.use('/api/produits',produits);
 app.use('/api/paniers',paniers);
 app.use('/api/commandes',commandes);
-
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 // Start the server
 app.listen(port, () => console.log(`Server running on port ${port}`));

@@ -14,6 +14,7 @@ const Produit = () => {
     nom: '',
     description: '',
     prix: '',
+    Stock:'',
     idCategorie: '',
     photo: null,
   });
@@ -53,6 +54,7 @@ const Produit = () => {
     productData.append("nom", formData.nom);
     productData.append("description", formData.description);
     productData.append("prix", formData.prix);
+    productData.append("Stock", formData.Stock);
     productData.append("idCategorie", formData.idCategorie);
     if (formData.photo) {
       productData.append("photo", formData.photo);
@@ -119,6 +121,17 @@ const Produit = () => {
               placeholder="Prix"
             />
           </Form.Group>
+          <Form.Group as={Col} md="4" controlId="validationCustom01">
+          <Form.Label>Stock</Form.Label>
+          <Form.Control
+            required
+            type="number"
+            name="Stock"
+            value={formData.Stock}
+            onChange={handleChange}
+            placeholder="Stock"
+          />
+        </Form.Group>
 
           <Form.Group as={Col} md="4" controlId="validationCustom02">
             <Form.Label>Categories</Form.Label>
@@ -139,8 +152,6 @@ const Produit = () => {
         </Row>
         <Button type="submit">Ajouter</Button>
       </Form>
-      <h3 className='saus-titre'>Liste des produits</h3>
-
       {/* Toast for Success/Error */}
       <ToastContainer position="top-end" className="p-3">
         <Toast show={showToast} onClose={() => setShowToast(false)} bg={toastVariant} delay={3000} autohide>

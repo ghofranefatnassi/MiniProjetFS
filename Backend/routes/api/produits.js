@@ -61,9 +61,21 @@ router.get('/search', async (req, res) => {
 });
 
 // Update a product
-router.patch('/:id', async (req, res) => {
+router.patch('/:id', upload.single('photo'), async (req, res) => {
+  const { nom, description, prix, idCategorie, Stock } = req.body;
+  // If a new photo is uploaded, use its path; otherwise, keep the existing photo path
+  const photo = req.file ? `/uploads/${req.file.filename}` : req.body.photo;
+
   try {
-    const produit = await Produit.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+    const produit = await Produit.findByIdAndUpdate(req.params.id, {
+      nom,
+      description,
+      prix,
+      idCategorie,
+      Stock,
+      photo,  // Update photo with new file or keep the previous one
+    }, { new: true, runValidators: true });
+
     if (!produit) {
       return res.status(404).send();
     }

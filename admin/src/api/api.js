@@ -60,4 +60,30 @@ export const addProduct = async (productData) => {
     throw error.response?.data || error.message;
   }
 };
+export const fetchProducts = async () => {
+  try {
+    const response = await axios.get(`${API_URLS}/produits`);
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error.message;
+  }
+};
+export const updateProduct = async (id, updatedData) => {
+  try {
+    const response = await axios.patch(`${API_URLS}/produits/${id}`, updatedData);
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error.message;
+  }
+};
+
+// Delete a product
+export const deleteProduct = async (id) => {
+  try {
+    const response = await axios.delete(`${API_URLS}/produits/${id}`);
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error.message;
+  }
+};
 
