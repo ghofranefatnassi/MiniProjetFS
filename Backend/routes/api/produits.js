@@ -98,4 +98,13 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
+router.get('/low-stock', async (req, res) => {
+  try {
+    const produits = await Produit.find({ Stock: { $lt: 5 } });
+    res.status(200).send(produits);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
 module.exports = router;

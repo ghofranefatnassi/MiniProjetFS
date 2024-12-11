@@ -1,0 +1,36 @@
+.titre{
+    color: #4a919e;
+    font-family: 'Inter', sans-serif;
+}
+.saus-titre{
+    font-family: 'Inter', sans-serif;
+    color: #212e53;
+}
+.custom-container {
+    background-color: #99d4de; /* Set the container color */
+    color: #fff; /* Text color for contrast */
+    padding: 20px; /* Add padding inside the container */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Add shadow */
+     /* Center text inside the container */
+  }
+
+  /* Style for the icons */
+  .icon-style {
+    font-size: 40px; /* Increase icon size */
+    margin-bottom: 10px; /* Add spacing below icons */
+  }
+  
+  /* Style for the text */
+  .text-style {
+    font-size: 25px; /* Increase text size */
+    font-weight: 500;
+    font-family: 'Inter', sans-serif; 
+    margin-left: 15px;/* Make text bold */
+  }
+  .visitor-count {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #212e53;
+    margin-left: 10px;
+  }

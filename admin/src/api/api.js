@@ -27,6 +27,22 @@ export const fetchCategories = async () => {
     throw error.response?.data || error.message;
   }
 };
+export const fetchVisitors = async () => {
+  try {
+    const response = await axios.get(`${API_URLS}/visiteurs`);
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error.message;
+  }
+};
+export const fetchCommandes = async () => {
+  try {
+    const response = await axios.get(`${API_URLS}/commandes`);
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error.message;
+  }
+};
 export const addCategory = async (category) => {
   try {
     const response = await axios.post(`${API_URLS}/categories/ajouter`, category);
@@ -86,4 +102,27 @@ export const deleteProduct = async (id) => {
     throw error.response?.data || error.message;
   }
 };
-
+export const fetchVisitorCount = async () => {
+  try {
+    const response = await axios.get(`${API_URLS}/visiteurs/count`);
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error.message;
+  }
+};
+export const fetchCommandesCount = async () => {
+  try {
+    const response = await axios.get(`${API_URLS}/commandes/count`);
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error.message;
+  }
+};
+export const fetchStockCount = async () => {
+  try {
+    const response = await axios.get(`${API_URLS}/produits/low-stock`);
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error.message;
+  }
+};

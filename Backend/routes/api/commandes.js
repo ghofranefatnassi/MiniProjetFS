@@ -23,6 +23,14 @@ router.get('/:idVisiteur', async (req, res) => {
     res.status(500).send(error);
   }
 });
+router.get('/', async (req, res) => {
+  try {
+    const commandes = await Commande.find();
+    res.status(200).json(commandes);
+  } catch (error) {
+    res.status(500).json({ message: 'Erreur lors de la récupération des utilisateurs', error });
+  }
+});
 
 // Update an order
 router.patch('/:id', async (req, res) => {
@@ -49,5 +57,15 @@ router.delete('/:id', async (req, res) => {
     res.status(500).send(error);
   }
 });
+router.get('/count', async (req, res) => {
+  try {
+      const commandeCount = await Commande.countDocuments(); // Counts the number of documents in the 'Visiteur' collection
+      res.status(200).json({ count: commandeCount }); // Send the count as a JSON response
+  } catch (error) {
+      console.error('Error counting visitors:', error);
+      res.status(500).json({ message: 'Error counting visitors', error});
+  }
+  });
+
 
 module.exports = router;

@@ -3,8 +3,7 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const config = require('config');
-const Visiteur = require('../../models/Visiteur'); // Make sure this file exists
-
+const Visiteur = require('../../models/Visiteur');
 // @route POST /api/visiteurs/register
 // @desc Register a new visitor
 // @access Public
@@ -86,6 +85,9 @@ router.post('/register', (req, res) => {
 // @route POST /api/visiteurs/login
 // @desc Login visitor
 // @access Public
+router.post("/logout", (req, res) => {
+    res.status(200).json({ message: "Logged out successfully" });
+  });
 router.post('/login', (req, res) => {
     const { emailVis, motDePasseVis } = req.body;
 
@@ -133,6 +135,43 @@ router.post('/login', (req, res) => {
         console.error(err);
         return res.status(500).json({ error: 'Internal server error' });
     });
+});
+//update 
+router.put('/:id', async (req, res) => {
+    const { id } = req.params;
+    const { nomVis, emailVis, motDePasseVis } = req.body;
+  
+    try {
+      const updatedVisiteur = await Visiteur.findByIdAndUpdate(
+        id,
+        { nomVis, emailVis, motDePasseVis },
+        { new: true }
+      );
+      if (!updatedVisiteur) {
+        return res.status(404).json({ message: 'Utilisateur non trouvé' });
+      }
+      res.status(200).json({ message: 'Utilisateur mis à jour avec succès', updatedVisiteur });
+    } catch (error) {
+      res.status(500).json({ message: 'Erreur lors de la mise à jour de l\'utilisateur', error });
+    }
+  });
+  router.get('/', async (req, res) => {
+    try {
+      const visteurs = await Visiteur.find();
+      res.status(200).json(visteurs);
+    } catch (error) {
+      res.status(500).json({ message: 'Erreur lors de la récupération des utilisateurs', error });
+    }
+  });
+
+  router.get('/count', async (req, res) => {
+    try {
+        const visitorCount = await Visiteur.countDocuments(); // Counts the number of documents in the 'Visiteur' collection
+        res.status(200).json({ count: visitorCount }); // Send the count as a JSON response
+    } catch (error) {
+        console.error('Error counting visitors:', error);
+        res.status(500).json({ message: 'Error counting visitors', error });
+    }
 });
 
 module.exports = router;

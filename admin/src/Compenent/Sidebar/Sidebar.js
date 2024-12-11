@@ -1,8 +1,13 @@
 import React from 'react';
 import './Sidebar.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 function Sidebar() {
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    localStorage.removeItem('authToken');
+    navigate('/');
+  };
 
   return (
     <div className="sidebar">
@@ -39,14 +44,15 @@ function Sidebar() {
           </Link>
         </li>
         <li>
-        <Link to="/Dashboard/order">
-          <i className="bx bx-notepad"></i>
-          <span className="link_name">Commandes</span>
-        </Link>
-      </li>
+          <Link to="/Dashboard/order">
+            <i className="bx bx-notepad"></i>
+            <span className="link_name">Commandes</span>
+          </Link>
+        </li>
         <li>
-          <div className="profile-details">
+          <div className="profile-details" onClick={handleLogout} style={{ cursor: 'pointer' }}>
             <i className="bx bx-log-out"></i>
+            <span className="link_name">Logout</span>
           </div>
         </li>
       </ul>
