@@ -19,6 +19,20 @@ export const loginUser = async (userData) => {
     throw error.response.data;
   }
 };
+export const updateUser = async (userData) => {
+  try {
+    const token = localStorage.getItem('token'); // Retrieve the token from local storage
+    const response = await axios.put(`${API_URL}/update`, userData, {
+      headers: {
+        'x-auth-token': token, // Attach the token for authentication
+      },
+    });
+    return response.data; // Return the response data
+  } catch (error) {
+    throw error.response?.data || error.message; // Handle errors
+  }
+};
+
 export const fetchCategories = async () => {
   try {
     const response = await axios.get(`${API_URLS}/categories`);
@@ -121,6 +135,14 @@ export const fetchCommandesCount = async () => {
 export const fetchStockCount = async () => {
   try {
     const response = await axios.get(`${API_URLS}/produits/low-stock`);
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error.message;
+  }
+};
+export const fetchUserData = async () => {
+  try {
+    const response = await axios.get(`${API_URL}/get-user`);
     return response.data;
   } catch (error) {
     throw error.response?.data || error.message;

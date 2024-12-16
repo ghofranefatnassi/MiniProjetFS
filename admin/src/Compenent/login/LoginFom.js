@@ -1,10 +1,9 @@
-// src/components/LoginForm/LoginForm.js
 import React, { useState } from 'react';
 import "./LoginForm.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { loginUser } from '../../api/api'; 
 import { useNavigate } from "react-router-dom";
-import logo from '../../image/logo.jpg'
+import logo from '../../image/cat.jpg'
 const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -15,7 +14,7 @@ const LoginForm = () => {
     try {
       const response = await loginUser({ email, password });
       setMessage("Login successful!");
-      localStorage.setItem("token", response.token); // Save JWT token
+      localStorage.setItem("token", response.token);
       navigate("/Dashboard"); // Navigate to AdminDashboard
     } catch (err) {
       setMessage(err.error || "Login failed");

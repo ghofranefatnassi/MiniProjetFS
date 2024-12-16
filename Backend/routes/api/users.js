@@ -3,7 +3,8 @@ const User = require("../../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const config = require("config");
-
+const auth = require('../../middelware/auth');
+const mongoose = require('mongoose');
 // @route POST api/users/register
 // @desc Register user
 // @access Public
@@ -170,27 +171,33 @@ router.get('/all', async (req, res) => {
     } catch (error) {
       res.status(500).json({ message: 'Erreur lors de la récupération de l\'utilisateur', error });
     }
-  });
-  
+  });  
   // Mettre à jour un utilisateur par ID (UPDATE)
-  router.put('/:id', async (req, res) => {
-    const { id } = req.params;
-    const { username, email, password, role } = req.body;
-  
+  router.put('/update', auth, async (req, res) => {
+    const { username, email, password } = req.body;
+    const userId = req.userid; // Extracted from the middleware
+
     try {
-      const updatedUser = await User.findByIdAndUpdate(
-        id,
-        { username, email, password, role },
-        { new: true }
-      );
-      if (!updatedUser) {
-        return res.status(404).json({ message: 'Utilisateur non trouvé' });
-      }
-      res.status(200).json({ message: 'Utilisateur mis à jour avec succès', updatedUser });
+        // Prepare the update object
+        const updatedData = { username, email };
+        if (password) {
+            // Hash the new password if provided
+            const hashedPassword = await bcrypt.hash(password, 10);
+            updatedData.password = hashedPassword;
+        }
+
+        // Update the user
+        const updatedUser = await User.findByIdAndUpdate(userId, updatedData, { new: true });
+        if (!updatedUser) {
+            return res.status(404).json({ message: 'Utilisateur non trouvé' });
+        }
+
+        res.status(200).json({ message: 'Utilisateur mis à jour avec succès', updatedUser });
     } catch (error) {
-      res.status(500).json({ message: 'Erreur lors de la mise à jour de l\'utilisateur', error });
+        console.error(error);
+        res.status(500).json({ message: 'Erreur lors de la mise à jour de l\'utilisateur', error });
     }
-  });
+});
   
   // Supprimer un utilisateur par ID (DELETE)
   router.delete('/:id', async (req, res) => {
@@ -206,7 +213,25 @@ router.get('/all', async (req, res) => {
       res.status(500).json({ message: 'Erreur lors de la suppression de l\'utilisateur', error });
     }
   });
+  router.get("/get-user", auth, async (req, res) => {
+    try {
+      const userId = req.userid;  // This should be set by your JWT authentication middleware
   
+      // Ensure the userId is a valid ObjectId
+      if (!mongoose.Types.ObjectId.isValid(userId)) {
+        return res.status(400).json({ error: "Invalid user ID" });
+      }
+  
+      const user = await User.findById(userId);  // Use req.userid as the ObjectId
+      if (!user) {
+        return res.status(404).json({ error: "User not found" });
+      }
+      res.json(user);
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: "Server error" });
+    }
+  });
   
 
 module.exports = router;

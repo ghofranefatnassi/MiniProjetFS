@@ -8,6 +8,7 @@ import  Dashboard from '../page/Acceuil/Dashboard'
 import './Dashboard.css'; 
 import Produit from '../page/produits/Produit';
 import ListeDeProduit from '../page/produits/ListeDeProduit';
+import Settings from '../page/Settings/Settings';
 const Dashbord = () => {
   return (
     <div className="dashboard">
@@ -19,7 +20,8 @@ const Dashbord = () => {
           <Route path="/produit/ajouter" element={<Produit />} />
           <Route path="/produit" element={<ListeDeProduit />} />
           <Route path="/visiteur" element={<Visiteur />} />
-          <Route path="/order" element={<Order />} />
+          <Route path="/commande" element={<Order />} />
+          <Route path="/parametre" element={<Settings />} />
         </Routes>
       </div>
     </div>
