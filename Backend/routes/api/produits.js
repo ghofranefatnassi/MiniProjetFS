@@ -4,6 +4,8 @@ const path = require('path');
 const router = express.Router();
 const Produit = require('../../models/Produit');
 
+
+
 // Set up storage engine for multer
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -107,4 +109,13 @@ router.get('/low-stock', async (req, res) => {
   }
 });
 
+router.get('/category/:idCategorie', async (req, res) => {
+  const { idCategorie } = req.params;
+  try {
+    const produits = await Produit.find({ idCategorie });
+    res.status(200).send(produits);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
 module.exports = router;
