@@ -112,10 +112,62 @@ router.get('/low-stock', async (req, res) => {
 router.get('/category/:idCategorie', async (req, res) => {
   const { idCategorie } = req.params;
   try {
+    // Find products that match the category ID
     const produits = await Produit.find({ idCategorie });
+    // If no products are found, return a 404 response
+    if (produits.length === 0) {
+      return res.status(404).send({ message: "No products found in this category" });
+    }
+    res.status(200).send(produits);
+  } catch (error) {
+    res.status(500).send({ message: "Server error", error });
+  }
+});
+router.get('/category/:category', async (req, res) => {
+  const { category } = req.params;
+
+  let filter = {};
+  
+  // Try to find category by ID (assuming ID is a valid ObjectId)
+  if (mongoose.Types.ObjectId.isValid(category)) {
+    filter = { idCategorie: category };  // When category is an ObjectId
+  } else {
+    filter = { idCategorie: category };  // If category is a name, you can check based on name (adjust if necessary)
+  }
+
+  try {
+    const produits = await Produit.find(filter);
     res.status(200).send(produits);
   } catch (error) {
     res.status(500).send(error);
   }
 });
+router.get('/category/:nomCat', async (req, res) => {
+  const { nomCat } = req.params;
+  try {
+    const produits = await Produit.find({ idCategorie: nomCat });
+    res.status(200).send(produits);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+// Get a product by its ID
+router.get('/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    // Find the product by its ID
+    const produit = await Produit.findById(id);
+    
+    // If the product doesn't exist, return a 404
+    if (!produit) {
+      return res.status(404).send({ message: "Product not found" });
+    }
+
+    // Send the found product
+    res.status(200).send(produit);
+  } catch (error) {
+    res.status(500).send({ message: "Server error", error });
+  }
+});
+
 module.exports = router;

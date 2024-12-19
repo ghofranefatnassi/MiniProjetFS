@@ -1,6 +1,7 @@
 {
     "mongo_url": "mongodb://localhost:27017/authlogin",
     "jwtSecret":"jwtSecret",
-    "jwtExpireIn": "2592000",
-    "tokenExpire": 3600
+    "jwtExpireIn": "25920000000000000000000000000",
+    "tokenExpire": 3600,
+    "Jwt":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NjQ1YzY5NGQ4MTRlOTJmYjVkYmI1NCIsImlhdCI6MTczNDY0MTg4MSwiZXhwIjoxNzM3MjMzODgxfQ.wcRnCXIaKhy1F05MxMFmZbS-9cldqa9ZAWoFsadVy1I"
 }
