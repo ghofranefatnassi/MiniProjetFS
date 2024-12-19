@@ -7,7 +7,8 @@ import Modal from 'react-bootstrap/Modal';
 import Toast from 'react-bootstrap/Toast';
 import ToastContainer from 'react-bootstrap/ToastContainer';
 import './Dashboard.css'; 
-import { fetchVisitorCount,fetchCommandesCount,fetchStockCount,fetchCategories,updateProduct } from "../../../api/api";
+import { fetchVisitorCount, fetchCommandesCount, fetchStockCount, fetchCategories, updateProduct } from "../../../api/api";
+
 const Dashboard = () => {
   const [visitorCount, setVisitorCount] = useState(0);
   const [commandesCount, setCommandesCount] = useState(0);
@@ -18,8 +19,9 @@ const Dashboard = () => {
   const [showEdit, setShowEdit] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const [toastShow, setToastShow] = useState(false);
-
   const [categories, setCategories] = useState([]);
+  const [userData, setUserData] = useState(null);  // State to store user data
+
   const getVisitorCount = async () => {
     try {
       const data = await fetchVisitorCount();
@@ -28,6 +30,7 @@ const Dashboard = () => {
       console.error("Error fetching visitor count:", error);
     }
   };
+
   const getCommandesCount = async () => {
     try {
       const data = await fetchCommandesCount();
@@ -36,6 +39,7 @@ const Dashboard = () => {
       console.error("Error fetching commandes count:", error);
     }
   };
+
   const handleCloseEdit = () => {
     setShowEdit(false);
     setEditingProduct(null);
@@ -92,15 +96,32 @@ const Dashboard = () => {
       console.error("Error fetching categories:", error);
     }
   };
+
+  // Retrieve user data from localStorage
   useEffect(() => {
+    const storedUserData = localStorage.getItem("userData"); // Get user data from localStorage
+    if (storedUserData) {
+      setUserData(JSON.parse(storedUserData));  // Parse and set user data
+    }
     getVisitorCount();
     getCommandesCount();
-    fetchProductsData ();
+    fetchProductsData();
     loadCategories();
   }, []);
+
   return (
     <div>
       <h1 className="titre">Tableau de bord</h1>
+
+      {/* Displaying User Data */}
+      {userData && (
+        <div className="user-info">
+          <h3>Bienvenue, {userData.name}!</h3>
+          <p>Email: {userData.email}</p>
+          <p>Role: {userData.role}</p> {/* Example of user role */}
+        </div>
+      )}
+
       <Container className="d-flex align-items-center">
         <Row className="justify-content-center align-items-center w-100">
           <Col md={5} className="custom-container mx-3">
@@ -115,6 +136,7 @@ const Dashboard = () => {
           </Col>
         </Row>
       </Container>
+
       <div className='saus-titre'>Stocks</div>
       {products.length === 0 ? (
         <p>Tous les stocks sont suffisants. Aucun produit avec un stock inférieur à 5.</p>

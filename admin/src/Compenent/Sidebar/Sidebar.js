@@ -44,17 +44,24 @@ function Sidebar() {
           </Link>
         </li>
         <li>
-          <Link to="/Dashboard/order">
+          <Link to="/Dashboard/commande">
             <i className="bx bx-notepad"></i>
             <span className="link_name">Commandes</span>
           </Link>
         </li>
+        <li>
+        <Link to="/Dashboard/parametre">
+          <i className="bx bx-cog"></i>
+          <span className="link_name">Parametres</span>
+        </Link>
+      </li>
         <li>
           <div className="profile-details" onClick={handleLogout} style={{ cursor: 'pointer' }}>
             <i className="bx bx-log-out"></i>
             <span className="link_name">Logout</span>
           </div>
         </li>
+        
       </ul>
     </div>
   );

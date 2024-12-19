@@ -1,7 +1,7 @@
-const config = require("config");
 const jwt = require('jsonwebtoken');
+const config = require('config');
 
-// Middleware to check for valid JWT token
+
 const auth = (req, res, next) => {
     const token = req.header('x-auth-token');
     if (!token) {
@@ -10,10 +10,11 @@ const auth = (req, res, next) => {
 
     try {
         const decoded = jwt.verify(token, config.get('jwtSecret'));
-        req.userid = decoded.id;
+        console.log('Decoded JWT:', decoded);  // Log the decoded JWT payload
+        req.userid = decoded.id;  // Store the decoded user ID
         next();
-    } catch (ex) {
-        res.status(400).send('Token not valid, please log in again.');
+    } catch (error) {
+        res.status(400).send('Invalid token. Please log in again.');
     }
 };
 
